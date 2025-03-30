@@ -81,7 +81,7 @@ othello/
 
 ## License
 
-[MIT License](LICENSE)
+This project is protected under a proprietary license. The software may be used and modified for personal use, but redistribution of modified versions as open source is prohibited. See the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
