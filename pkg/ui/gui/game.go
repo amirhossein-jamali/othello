@@ -490,6 +490,15 @@ func (g *Game) handlePlayerInput() {
 	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
 		g.handleBoardClick()
 	}
+
+	// Handle space key for passing when no valid moves
+	if inpututil.IsKeyJustPressed(ebiten.KeySpace) || inpututil.IsKeyJustPressed(ebiten.KeyP) {
+		// Only allow passing when player has no valid moves
+		if !g.othelloGame.HasValidMove() && !g.othelloGame.GameOver {
+			g.othelloGame.Pass()
+			g.validMoves = g.othelloGame.GetValidMoves()
+		}
+	}
 }
 
 // updateSelectedCell updates the currently selected cell based on mouse position
@@ -760,6 +769,15 @@ func (g *Game) drawStatusBar(screen *ebiten.Image) {
 	x = (BoardMarginX + BoardSize/2) - fixedToIntWidth(bounds)/2
 	y = ScreenHeight - 30
 	text.Draw(screen, statusText, g.resources.GetNormalFont(), x, y, TextColor)
+
+	// Show prompt for passing when no valid moves available
+	if !g.othelloGame.HasValidMove() && !g.othelloGame.GameOver {
+		passText := "No valid moves! Press SPACE or P to pass"
+		bounds, _ = font.BoundString(g.resources.GetSmallFont(), passText)
+		x = (BoardMarginX + BoardSize/2) - fixedToIntWidth(bounds)/2
+		y = ScreenHeight - 10
+		text.Draw(screen, passText, g.resources.GetSmallFont(), x, y, color.RGBA{255, 255, 0, 255}) // Yellow text
+	}
 }
 
 // updateGameOver handles game over screen interactions
